@@ -1,0 +1,77 @@
+---
+- name: Ubuntu
+  when: ansible_distribution == 'Ubuntu'
+  include: ubuntu.yml
+
+- name: RedHat
+  when: ansible_os_family == 'RedHat' and ansible_distribution_version <= '7'
+  include: redhat.yml
+
+- name: Docker pip modules
+  pip:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - pip
+    - setuptools
+    - six
+    - docker-py
+    - passlib
+
+- name: ensure "docker" group present
+  group:
+    name: docker
+    state: present
+    system: yes
+
+- name: get UID_MIN from login.defs
+  shell: awk '/^\s*UID_MIN\s*([0-9]*).*?$/ {print $2}' /etc/login.defs removes=/etc/login.defs
+  register: uid_min
+  always_run: True
+  changed_when: False
+
+- name: calculate UID_MAX from UID_MIN by substracting 1
+  set_fact: uid_max='{{ uid_min.stdout | int - 1 }}'
+  when: uid_min is defined
+
+- name: set UID_MAX on Debian-systems if no login.defs exist
+  set_fact: uid_max='999'
+  when: ansible_os_family == 'Debian' and not uid_min
+
+- name: set UID_MAX on other systems if no login.defs exist
+  set_fact: uid_max='499'
+  when: not uid_min
+
+- name: get all user accounts
+  command: awk -F'':'' '{ if ( $3 >= {{uid_max|quote}} ) print $1}' /etc/passwd removes=/etc/passwd 
+  changed_when: False
+  always_run: True
+  register: user_accounts
+
+- name: add users into "docker"
+  user:
+    append: yes
+    groups: docker
+    state: present
+    name: '{{ item }}'
+  with_items: '{{ user_accounts }}'
+
+- name: update insecure registry
+  lineinfile:
+    dest: /etc/sysconfig/docker
+    regexp: ^other_args=""
+    line: other_args="--insecure-registry 172.17.0.1 --dns 172.17.0.1"
+  when: ansible_os_family == 'RedHat' and ansible_distribution_version <= '7'
+
+- name: update insecure registry
+  lineinfile:
+    dest: /etc/default/docker
+    regexp: ^#DOCKER_OPTS
+    line: DOCKER_OPTS="--insecure-registry 172.17.0.1 --dns 172.17.0.1"
+  when: ansible_distribution == 'Ubuntu'
+
+- name: enable docker service
+  service:
+    name: docker
+    enabled: yes
+    state: started

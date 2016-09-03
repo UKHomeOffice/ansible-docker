@@ -1,0 +1,14 @@
+---
+- yum_repository:
+    name: Docker-Yum
+    description: Docker-YUM
+    baseurl: https://yum.dockerproject.org/repo/main/centos/7/
+    gpgkey: https://yum.dockerproject.org/gpg
+    gpgcheck: true
+    sslverify: true
+    enabled: true
+
+- name: install docker
+  package: >
+    name=docker-engine
+    state=latest
