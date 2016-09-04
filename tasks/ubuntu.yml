@@ -11,7 +11,7 @@
 
 - name: add docker apt repository
   apt_repository: >
-    repo="deb https://apt.dockerproject.org/repo ubuntu-{{ ansible_distribution_release }} main" update_cache=yes
+    repo="deb https://apt.dockerproject.org/repo ubuntu-{{ ansible_distribution_release }} main" update_cache=yes mode=0644
 
 - name: install docker
   apt: name=docker-engine
