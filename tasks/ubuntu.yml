@@ -21,7 +21,7 @@
     owner: root
     group: root
     mode: 0664
-    state: present
+    state: file
 
 - name: install docker
   apt: name=docker-engine
