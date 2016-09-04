@@ -70,7 +70,7 @@
 - name: update insecure registry
   lineinfile:
     dest: /etc/default/docker
-    regexp: ^#DOCKER_OPTS
+    regexp: DOCKER_OPTS
     line: DOCKER_OPTS="--insecure-registry 172.17.0.1 --dns 172.17.0.1"
   when: ansible_distribution == 'Ubuntu'
 
