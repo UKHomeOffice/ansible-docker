@@ -48,13 +48,17 @@
   always_run: True
   register: user_accounts
 
+- name: remove system accounts from list
+  set_fact:
+    user_accounts_cond: '{{user_accounts.stdout_lines | difference(os_ignore_users) }}'
+
 - name: add users into "docker"
   user:
     append: yes
     groups: docker
     state: present
-    name: '{{ item }}'
-  with_items: '{{ user_accounts }}'
+    name: "{{ item }}"
+  with_items: "{{ user_accounts_cond }}"
 
 - name: update insecure registry
   lineinfile:
