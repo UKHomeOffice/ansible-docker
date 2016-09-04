@@ -20,7 +20,7 @@
     path: /etc/apt/sources.list.d/apt_dockerproject_org_repo.list
     owner: root
     group: root
-    mode: 0664
+    mode: 0644
     state: file
 
 - name: install docker
