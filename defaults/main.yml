@@ -1,2 +1,3 @@
 ---
 os_ignore_users: nobody
+docker_registry: 172.17.0.1

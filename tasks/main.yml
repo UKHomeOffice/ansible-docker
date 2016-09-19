@@ -64,14 +64,14 @@
   lineinfile:
     dest: /etc/sysconfig/docker
     regexp: ^other_args=""
-    line: other_args="--insecure-registry 172.17.0.1 --dns 172.17.0.1"
+    line: other_args="--insecure-registry {{ docker_registry }} --dns {{ docker_registry }}"
   when: ansible_os_family == 'RedHat' and ansible_distribution_version <= '7'
 
 - name: update insecure registry
   lineinfile:
     dest: /etc/default/docker
     regexp: DOCKER_OPTS
-    line: DOCKER_OPTS="--insecure-registry 172.17.0.1 --dns 172.17.0.1"
+    line: DOCKER_OPTS="--insecure-registry {{ docker_registry }} --dns {{ docker_registry }}"
   when: ansible_distribution == 'Ubuntu'
 
 - name: enable docker service
