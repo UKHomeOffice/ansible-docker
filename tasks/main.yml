@@ -1,11 +1,6 @@
 ---
-- name: Ubuntu
-  when: ansible_distribution == 'Ubuntu'
-  include: ubuntu.yml
-
-- name: RedHat
-  when: ansible_os_family == 'RedHat' and ansible_distribution_version <= '7'
-  include: redhat.yml
+- name: Include tasks suitable to our OS Family
+  include: "{{ ansible_os_family }}.yml"
 
 - name: Docker pip modules
   pip:
