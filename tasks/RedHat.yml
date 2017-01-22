@@ -1,6 +1,6 @@
 ---
 - yum_repository:
-    name: Docker-Yum 7
+    name: Docker-Yum-7
     description: Docker-YUM
     baseurl: https://yum.dockerproject.org/repo/main/centos/7/
     gpgkey: https://yum.dockerproject.org/gpg
@@ -10,7 +10,7 @@
   when: ansible_distribution_version >= '7'
 
 - yum_repository:
-    name: Docker-Yum 6
+    name: Docker-Yum-6
     description: Docker-YUM
     baseurl: https://yum.dockerproject.org/repo/main/centos/6/
     gpgkey: https://yum.dockerproject.org/gpg
