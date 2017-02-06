@@ -7,4 +7,3 @@ docker_repo_gpgkey_url: https://yum.dockerproject.org/gpg
 docker_repo_enabled: true
 docker_repo_ssl_verify: true
 docker_repo_gpgcheck: true
-docker_repo_enabled: true
