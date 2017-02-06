@@ -1,9 +1,12 @@
 ---
-- name: Include tasks suitable to our OS Family
+- name: Include vars suitable to our OS Family
   include_vars: "{{ item }}"
   with_first_found:
     - "{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
     - "{{ ansible_os_family }}.yml"
+
+- name: Include tasks suitable to our OS Family
+  include: "{{ ansible_os_family }}.yml"
 
 - name: Docker pip modules
   pip:
@@ -63,7 +66,7 @@
     dest: /etc/sysconfig/docker
     regexp: ^other_args=""
     line: other_args="--insecure-registry {{ docker_registry }} --dns {{ docker_registry }}"
-  when: ansible_os_family == 'RedHat' and ansible_distribution_version <= '7'
+  when: ansible_os_family == 'RedHat'
 
 - name: update insecure registry
   lineinfile:
