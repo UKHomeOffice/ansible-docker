@@ -61,19 +61,38 @@
     name: "{{ item }}"
   with_items: "{{ user_accounts_cond }}"
 
+- name: create docker override systemd directory
+  file:
+    path: /etc/systemd/system/docker.service.d
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version >= 7
+
+- name: create docker override file
+  copy:
+    dest: /etc/systemd/system/docker.service.d/docker.conf
+    owner: root
+    group: root
+    mode: 0644
+    state: present
+    src: docker.conf
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version >= 7
+
 - name: update insecure registry
   lineinfile:
     dest: /etc/sysconfig/docker
     regexp: ^other_args=""
     line: other_args="--insecure-registry {{ docker_registry }} --dns {{ docker_registry }}"
-  when: ansible_os_family == 'RedHat'
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version < 7
 
 - name: update insecure registry
   lineinfile:
     dest: /etc/default/docker
     regexp: DOCKER_OPTS
     line: DOCKER_OPTS="--insecure-registry {{ docker_registry }} --dns {{ docker_registry }}"
-  when: ansible_distribution == 'Ubuntu'
+  when: ansible_distribution == 'Ubuntu' or (ansible_distribution == 'RedHat' and ansible_distribution_major_version >= 7)
 
 - name: enable docker service
   service:
