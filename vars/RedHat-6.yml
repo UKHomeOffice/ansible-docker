@@ -1,0 +1,10 @@
+---
+os_ignore_users: nobody
+docker_registry: 172.17.0.1
+
+docker_repo: https://yum.dockerproject.org/repo/main/centos/6/
+docker_repo_gpgkey_url: https://yum.dockerproject.org/gpg
+docker_repo_enabled: true
+docker_repo_ssl_verify: true
+docker_repo_gpgcheck: true
+docker_repo_enabled: true

@@ -1,30 +1,26 @@
 ---
-- yum_repository:
-    name: Docker-Yum-7
-    description: Docker-YUM
-    baseurl: https://yum.dockerproject.org/repo/main/centos/7/
-    gpgkey: https://yum.dockerproject.org/gpg
-    gpgcheck: true
-    sslverify: true
-    enabled: true
-  when: ansible_distribution_version >= '7'
 
 - yum_repository:
-    name: Docker-Yum-6
+    name: Docker-Yum
     description: Docker-YUM
-    baseurl: https://yum.dockerproject.org/repo/main/centos/6/
-    gpgkey: https://yum.dockerproject.org/gpg
-    gpgcheck: true
-    sslverify: true
-    enabled: true
-  when: ansible_distribution_version <= '7'
+    baseurl: "{{docker_repo }}"
+    gpgkey: "{{ docker_repo_gpgkey_url }}"
+    gpgcheck: "{{ docker_repo_gpgcheck }}"
+    sslverify: "{{ docker_repo_ssl_verify }}"
+    enabled: "{{ docker_repo_enabled }}"
+
+- name: Require EPEL for Python Pip
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - epel-release
 
 - name: install docker
   package:
     name: "{{ item }}"
     state: latest
   with_items:
-    - epel-release
     - docker-engine
     - python
     - python-pip
