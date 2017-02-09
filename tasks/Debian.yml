@@ -11,21 +11,16 @@
     - python3-httplib2
 
 - name : (Ubuntu) add docker apt key
-  apt_key: keyserver="hkp://p80.pool.sks-keyservers.net:80" id='58118E89F3A912897C070ADBF76221572C52609D'
+  apt_key:
+    url: "{{ apt_docker_key }}"
+    id: "{{ apt_docker_key_id }}"
+    state: present
 
 - name: add docker apt repository
   apt_repository:
-    repo: "deb https://apt.dockerproject.org/repo ubuntu-{{ ansible_distribution_release }} main"
+    repo: "{{ apt_docker_repo }}"
     update_cache: yes
-    mode: "0644"
-
-- name: fix apt file perms for docker
-  file:
-    path: /etc/apt/sources.list.d/apt_dockerproject_org_repo.list
-    owner: root
-    group: root
     mode: 0644
-    state: file
 
 - name: install docker
   apt:
