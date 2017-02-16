@@ -10,7 +10,7 @@
     - python3-pip
     - python3-httplib2
 
-- name : (Ubuntu) add docker apt key
+- name: (Ubuntu) add docker apt key
   apt_key:
     url: "{{ apt_docker_key }}"
     id: "{{ apt_docker_key_id }}"
