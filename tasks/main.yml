@@ -54,6 +54,7 @@
     state: present
     name: "{{ item }}"
   with_items: "{{ user_accounts_cond }}"
+  when: not docker_secure
 
 - name: create docker override systemd directory
   file:
