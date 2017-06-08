@@ -93,3 +93,4 @@
     name: docker
     enabled: yes
     state: started
+  tags: usb
