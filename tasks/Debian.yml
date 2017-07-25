@@ -7,9 +7,10 @@
     - "linux-image-extra-virtual-lts-{{ ansible_distribution_release }}"
     - apt-transport-https
     - ca-certificates
-    - python3
-    - python3-pip
-    - python3-httplib2
+    - software-properties-common
+    - python
+    - python-pip
+    - python-httplib2
 
 - name: (Ubuntu) add docker apt key
   apt_key:
@@ -25,5 +26,4 @@
 
 - name: install docker
   apt:
-    name: docker-engine
-
+    name: docker-ce=17.06.0~ce-0~ubuntu
