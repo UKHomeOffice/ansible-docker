@@ -3,8 +3,6 @@
   apt:
     name: "{{ item }}"
   with_items:
-    - "linux-image-extra-virtual"
-    - "linux-image-extra-virtual-lts-{{ ansible_distribution_release }}"
     - apt-transport-https
     - ca-certificates
     - software-properties-common
