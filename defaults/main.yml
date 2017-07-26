@@ -8,8 +8,8 @@ docker_repo_enabled: true
 docker_repo_ssl_verify: true
 docker_repo_gpgcheck: true
 
-apt_docker_repo: "deb https://apt.dockerproject.org/repo ubuntu-{{ ansible_distribution_release }} main"
-apt_docker_key: https://yum.dockerproject.org/gpg
-apt_docker_key_id: 58118E89F3A912897C070ADBF76221572C52609D
+apt_docker_repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+apt_docker_key: https://download.docker.com/linux/ubuntu/gpg
+apt_docker_key_id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
 
 docker_secure: true
