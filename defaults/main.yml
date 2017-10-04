@@ -2,6 +2,9 @@
 os_ignore_users: nobody
 docker_registry: 172.17.0.1
 
+custom_pip_repo: false
+pip_repo:  https://pypi.python.org/simple
+
 docker_repo: https://yum.dockerproject.org/repo/main/centos/7/
 docker_repo_gpgkey_url: https://yum.dockerproject.org/gpg
 docker_repo_enabled: true

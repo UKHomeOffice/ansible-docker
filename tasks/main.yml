@@ -2,6 +2,12 @@
 - name: Include tasks suitable to our OS Family
   include: "{{ ansible_os_family }}.yml"
 
+- name: Adding pip repo
+  template:
+    dest:  ~/.pip/pip.conf
+    src: pip.conf.j2
+  when: custom_pip_repo
+
 - name: Docker pip modules
   pip:
     name: "{{ item }}"
@@ -38,7 +44,7 @@
   when: ansible_os_family == 'RedHat'
 
 - name: get all user accounts
-  command: awk -F'':'' '{ if ( $3 >= {{uid_max|quote}} ) print $1}' /etc/passwd removes=/etc/passwd 
+  command: awk -F'':'' '{ if ( $3 >= {{uid_max|quote}} ) print $1}' /etc/passwd removes=/etc/passwd
   changed_when: False
   always_run: True
   register: user_accounts
